@@ -139,6 +139,15 @@ export class ContractService {
     name: string,
     syncHeight: number = contract.startHeight
   ) {
+    const existing = await this.listenerTable()
+      .where({
+        name,
+        contract: contract.id,
+      })
+      .first();
+
+    if (existing) return existing;
+
     const created = {
       id: uuid(),
       contract: contract.id,
